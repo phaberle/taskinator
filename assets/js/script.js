@@ -34,13 +34,11 @@ var taskFormHandler = function(event) {
             type: taskTypeInput,
             status: "to do"
         };
-
         createTaskEl(taskDataObj);
     }
 };
 
 var createTaskEl = function(taskDataObj) {
-
     var listItemEl = document.createElement("li");
     listItemEl.className = "task-item";
     listItemEl.setAttribute("data-task-id", taskIdCounter);
@@ -193,7 +191,25 @@ var deleteTask = function(taskId) {
 
 var saveTasks = function() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
+var loadTasks = function() {
+    var savedTasks = localStorage.getItem("tasks");
+    //if there are no tasks, set tasks to an empty array and return out of the function
+    if (!savedTasks) {
+        return false;
+    }
+
+    console.log("Save tasks found!");
+    //else, load up saved tasks
+
+    //parse int array of objects
+    savedTasks = JSON.parse(savedTasks);
+
+    //loop through saveTasks array
+    for (var i = 0; i < savedTasks.length; i++) {
+        createTaskEl(savedTasks[i]);
+    }
 }
 
 
@@ -205,3 +221,5 @@ pageContentEl.addEventListener("click", taskButtonHandler);
 
 // for changing the status
 pageContentEl.addEventListener("change", taskStatusChangeHandler);
+
+loadTasks();
